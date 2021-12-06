@@ -13,11 +13,13 @@ def call (body) {
       stages {
          stage('Checkout') {
             steps {
+                 // Clean before build
+                cleanWs();
                 echo "Workspace is ${pwd()}";
                 git branch: "${RepoBranch}", url: "${RepoUrl}" 
               
             }
-         }
+         } 
       }
    }
 }
