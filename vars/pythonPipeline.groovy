@@ -13,8 +13,7 @@ def call (body) {
    String TestsContainerFileLocation = config.testsContainerFileLocation;
    String TestsContainerFileName = config.testsContainerFileName;
    String TestsScriptsFileLocation = config.testsScriptsFileLocation;
-   String TestsScriptsFileName = config.testsScriptsFileName;
-   def Workspace = "";
+   String TestsScriptsFileName = config.testsScriptsFileName; 
 
    pipeline {
       agent any
@@ -42,10 +41,9 @@ def call (body) {
         }
         stage('Start test app') {
             steps {
-                dir("${Workspace}\\${TestsContainerFileLocation}") {
+                dir("${TestsContainerFileLocation}") {
                     powershell(script: """ 
-
-                        docker-compose up -d ${Workspace}\\${TestsContainerFileLocation}\\${TestsContainerFileName} 
+                        docker-compose up -d ${TestsContainerFileName} 
                     """)  
                 }
          }
