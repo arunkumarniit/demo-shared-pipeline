@@ -42,7 +42,9 @@ def call (body) {
         stage('Start test app') {
             steps {
                 powershell(script: """
-                    docker-compose up -d ${TestsContainerFileLocation}/${TestsContainerFileName}
+                    cd ${TestsContainerFileLocation}
+                    docker-compose up -d ${TestsContainerFileName}
+                    cd..
                 """)  
          }
          post {
@@ -57,7 +59,9 @@ def call (body) {
       stage('Run Tests') {
          steps { 
             powershell(script: """
-                py ./${TestsScriptsFileLocation}/${TestsScriptsFileName}
+                cd ${TestsScriptsFileLocation}
+                py ${TestsScriptsFileName}
+                cd..
             """)      
          }
       }
