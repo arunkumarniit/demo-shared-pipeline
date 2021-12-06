@@ -28,7 +28,7 @@ def call (body) {
                 dir("${DockerFileFolder}\\Dockerfile") {
                     powershell(script: """
                         docker images -a
-                        docker build -t ${registry} .
+                        docker build -t ${DockerRegistry} .
                         docker images -a 
                         """)                         
                 }
