@@ -1,5 +1,3 @@
-#!groovy
-
 package sharedlibrary
 
 def call (body) {
