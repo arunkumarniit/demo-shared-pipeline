@@ -42,7 +42,7 @@ def call (body) {
             steps {
                 dir("${TestsContainerFileLocation}") {
                     powershell(script: """ 
-                        \$File = Join-Path -Path (Get-Location) -ChildPath "${TestsContainerFileLocation}\\${TestsContainerFileName}"
+                        \$File = Join-Path -Path (Get-Location) -ChildPath "${TestsContainerFileName}"
                         \$File
                         docker-compose up -d  \$File
                     """)  
