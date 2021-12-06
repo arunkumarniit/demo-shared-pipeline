@@ -74,41 +74,41 @@ def call (body) {
         //     }
         // }
         stage('Push Container') {
-         steps { 
-            dir("${DockerFileFolder}") { 
-               script {
-                  docker.withRegistry("https://index.docker.io/v1/", DockerRegistryCredentials)
-                  {
-                     def image = docker.build(DockerRegistry) 
-                     image.push(); 
-                  } 
-               }
+            steps { 
+                dir("${DockerFileFolder}") { 
+                    script {
+                        docker.withRegistry("https://index.docker.io/v1/", DockerRegistryCredentials)
+                        {
+                            def image = docker.build(DockerRegistry) 
+                            image.push(); 
+                        } 
+                    }
+                }
             }
-         }
         }
-         // stage('Container Scanning')
-      // {
-      //    parallel {
-      //       stage('Run Anchore') {
-      //          steps {
-      //             sleep(time: 10, unit: 'SECONDS')
-      //             powershell(script: """
-      //                Write-Output: ${registry} 
-      //             """)
-      //          }
-      //       }
-      //       stage('Run Trivy') {
-      //          steps {
-      //             powershell(script: """
-      //                   docker pull aquasec/trivy:0.21.1 
-      //                """)
-      //             powershell(script: """
-      //                   docker run --rm -v C:/root/.cache/ aquasec/trivy:0.21.1 ${registry}
-      //                """)
-      //          }
-      //       }
-      //    }
-      // }
+        stage('Container Scanning')
+        {
+            parallel {
+                // stage('Run Anchore') {
+                //     steps {
+                //         sleep(time: 10, unit: 'SECONDS')
+                //         powershell(script: """
+                //             Write-Output: ${DockerRegistry} 
+                //         """)
+                //         }
+                // }
+                stage('Run Trivy') {
+                    steps {
+                        powershell(script: """
+                            docker pull aquasec/trivy:0.21.1 
+                        """)
+                        powershell(script: """
+                            docker run --rm -v C:/root/.cache/ aquasec/trivy:0.21.1 ${DockerRegistry}
+                                """)
+                    }
+                }
+            }
+        }
         stage('Deploy to QA') {
             environment {
                 ENVIRONMENT ='qa'
