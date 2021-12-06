@@ -75,8 +75,7 @@ def call (body) {
         // }
         stage('Push Container') {
          steps { 
-            dir("${DockerFileFolder}") {
-            {
+            dir("${DockerFileFolder}") { 
                script {
                   docker.withRegistry("https://index.docker.io/v1/", DockerRegistryCredentials)
                   {
@@ -86,7 +85,7 @@ def call (body) {
                }
             }
          }
-      }
+        }
       }
    }
 }
