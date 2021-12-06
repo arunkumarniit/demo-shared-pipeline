@@ -41,11 +41,11 @@ def call (body) {
         }
         stage('Start test app') {
             steps {
-                powershell(script: """
-                    cd ${TestsContainerFileLocation}
-                    docker-compose up -d ${TestsContainerFileName}
-                    cd..
-                """)  
+                dir("${pwd()}\\${TestsContainerFileLocation}") {
+                    powershell(script: """ 
+                        docker-compose up -d ${TestsContainerFileName} 
+                    """)  
+                }
          }
          post {
             success {
@@ -58,11 +58,11 @@ def call (body) {
       }
       stage('Run Tests') {
          steps { 
-            powershell(script: """
-                cd ${TestsScriptsFileLocation}
-                py ${TestsScriptsFileName}
-                cd..
-            """)      
+              dir("${pwd()}\\${TestsScriptsFileLocation}") {
+                powershell(script: """
+                    py ${TestsScriptsFileName}
+                """)      
+              }
          }
       }
       stage('Stop test app') {
