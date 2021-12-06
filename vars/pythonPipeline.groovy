@@ -22,7 +22,6 @@ def call (body) {
             steps {
                 // Clean before build
                 cleanWs();
-                Workspace = pwd();
                 echo "Workspace is ${Workspace}";
                 git branch: "${RepoBranch}", url: "${RepoUrl}" 
                 
