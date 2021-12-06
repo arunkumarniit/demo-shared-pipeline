@@ -14,7 +14,7 @@ def call (body) {
    String TestsContainerFileName = config.testsContainerFileName;
    String TestsScriptsFileLocation = config.testsScriptsFileLocation;
    String TestsScriptsFileName = config.testsScriptsFileName;
-   String Workspace = "";
+   def Workspace = "";
 
    pipeline {
       agent any
