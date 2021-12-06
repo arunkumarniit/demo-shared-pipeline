@@ -6,7 +6,7 @@ def call (body) {
 
    String ChangeLog = '';
    String RepoUrl = config.repoUrl;
-   String RepoBranch = config.RepoBranch;
+   String RepoBranch = config.repoBranch;
 
    pipeline {
       agent any
