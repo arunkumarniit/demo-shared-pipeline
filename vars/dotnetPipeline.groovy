@@ -7,7 +7,6 @@ def call (body) {
    String ChangeLog = '';
    String RepoUrl = config.repoUrl;
    String RepoBranch = config.repoBranch;
-   String DockerFileFolder = config.dockerFileFolder;
    String DockerRegistry = config.dockerRegistry;
    String DockerRegistryCredentials = config.dockerRegistryCredentials; 
 
@@ -25,13 +24,11 @@ def call (body) {
         }   
         stage('Docker Build') {
             steps {
-                dir("${DockerFileFolder}") {
-                    powershell(script: """
+                powershell(script: """
                         docker images -a
                         docker build -t ${DockerRegistry} .
                         docker images -a 
-                        """)                         
-                }
+                        """)   
             }
         }
         stage('Push Container') {
