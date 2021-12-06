@@ -25,7 +25,7 @@ def call (body) {
         }   
         stage('Docker Build') {
             steps {
-                dir("${DockerFileFolder}\\Dockerfile") {
+                dir("${DockerFileFolder}") {
                     powershell(script: """
                         docker images -a
                         docker build -t ${DockerRegistry} .
