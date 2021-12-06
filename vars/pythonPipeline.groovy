@@ -38,39 +38,53 @@ def call (body) {
                 }
             }
         }
-        stage('Start test app') {
-            steps {
-                dir("${TestsContainerFileLocation}") {
-                    powershell(script: """ 
-                        \$File = Join-Path -Path (Get-Location) -ChildPath "${TestsContainerFileName}"
-                        \$File
-                        docker-compose up -d  \$File
-                    """)  
-                }
-         }
-         post {
-            success {
-               echo "App started successfully :)"
-            }
-            failure {
-               echo "App failed to start :("
-            }
-         }
-      }
-      stage('Run Tests') {
+        // stage('Start test app') {
+        //     steps {
+        //         dir("${TestsContainerFileLocation}") {
+        //             powershell(script: """ 
+        //                 \$File = Join-Path -Path (Get-Location) -ChildPath "${TestsContainerFileName}"
+        //                 \$File
+        //                 docker-compose up -d  \$File
+        //             """)  
+        //         }
+        //  }
+        //  post {
+        //     success {
+        //        echo "App started successfully :)"
+        //     }
+        //     failure {
+        //        echo "App failed to start :("
+        //     }
+        //  }
+        // }
+        // stage('Run Tests') {
+        //     steps { 
+        //         dir("${Workspace}\\${TestsScriptsFileLocation}") {
+        //             powershell(script: """
+        //                 py ${TestsScriptsFileName}
+        //             """)      
+        //         }
+        //     }
+        // }
+        // stage('Stop test app') {
+        //     steps {
+        //         powershell(script: """
+        //         docker-compose down
+        //         """)
+        //     }
+        // }
+        stage('Push Container') {
          steps { 
-              dir("${Workspace}\\${TestsScriptsFileLocation}") {
-                powershell(script: """
-                    py ${TestsScriptsFileName}
-                """)      
-              }
-         }
-      }
-      stage('Stop test app') {
-         steps {
-            powershell(script: """
-               docker-compose down
-            """)
+            dir("${DockerFileFolder}") {
+            {
+               script {
+                  docker.withRegistry("https://index.docker.io/v1/", DockerRegistryCredentials)
+                  {
+                     def image = docker.build(DockerRegistry) 
+                     image.push(); 
+                  } 
+               }
+            }
          }
       }
       }
