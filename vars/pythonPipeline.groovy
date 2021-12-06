@@ -14,7 +14,7 @@ def call (body) {
    String TestsContainerFileName = config.testsContainerFileName;
    String TestsScriptsFileLocation = config.testsScriptsFileLocation;
    String TestsScriptsFileName = config.testsScriptsFileName;
-
+   String Workspace = "";
 
    pipeline {
       agent any
@@ -23,7 +23,8 @@ def call (body) {
             steps {
                 // Clean before build
                 cleanWs();
-                echo "Workspace is ${pwd()}";
+                Workspace = pwd();
+                echo "Workspace is ${Workspace}";
                 git branch: "${RepoBranch}", url: "${RepoUrl}" 
                 
             }
@@ -41,9 +42,10 @@ def call (body) {
         }
         stage('Start test app') {
             steps {
-                dir("${pwd()}\\${TestsContainerFileLocation}") {
+                dir("${Workspace}\\${TestsContainerFileLocation}") {
                     powershell(script: """ 
-                        docker-compose up -d ${pwd()}\\${TestsContainerFileLocation}\\${TestsContainerFileName} 
+
+                        docker-compose up -d ${Workspace}\\${TestsContainerFileLocation}\\${TestsContainerFileName} 
                     """)  
                 }
          }
@@ -58,7 +60,7 @@ def call (body) {
       }
       stage('Run Tests') {
          steps { 
-              dir("${pwd()}\\${TestsScriptsFileLocation}") {
+              dir("${Workspace}\\${TestsScriptsFileLocation}") {
                 powershell(script: """
                     py ${TestsScriptsFileName}
                 """)      
