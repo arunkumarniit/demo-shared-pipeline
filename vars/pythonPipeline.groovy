@@ -10,6 +10,9 @@ def call (body) {
    String DockerFileFolder = config.dockerFileFolder;
    String DockerRegistry = config.dockerRegistry;
    String DockerRegistryCredentials = config.dockerRegistryCredentials;
+   String TestsContainerFileLocation = config.testsContainerFileLocation;
+   String TestsScriptsFileLocation = config.testsScriptsFileLocation;
+
 
    pipeline {
       agent any
@@ -34,6 +37,39 @@ def call (body) {
                 }
             }
         }
+        stage('Start test app') {
+            steps {
+                dir("${TestsContainerFileLocation}") {
+                    powershell(script: """
+                        docker-compose up -d ${TestsContainerFileLocation}
+                        """)                         
+                } 
+         }
+         post {
+            success {
+               echo "App started successfully :)"
+            }
+            failure {
+               echo "App failed to start :("
+            }
+         }
+      }
+      stage('Run Tests') {
+         steps {
+             dir("${TestsScriptsFileLocation}") {
+                    powershell(script: """
+                        py ./${TestsScriptsFileLocation}
+                        """)                         
+                }  
+         }
+      }
+      stage('Stop test app') {
+         steps {
+            powershell(script: """
+               docker-compose down
+            """)
+         }
+      }
       }
    }
 }
