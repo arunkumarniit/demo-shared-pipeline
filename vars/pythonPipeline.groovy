@@ -2,7 +2,7 @@ def call (body) {
    def config = [:]
    body.resolveStrategy = Closure.DELEGATE_FIRST
    body.delegate = config
-   body()
+   body();
 
    String ChangeLog = '';
    String RepoUrl = config.repoUrl;
@@ -13,7 +13,8 @@ def call (body) {
       stages {
          stage('Checkout') {
             steps {
-              
+              echo "${RepoBranch}"
+              echo "${RepoUrl}"
               git branch: "${RepoBranch}", url: "${RepoUrl}" 
               
             }
