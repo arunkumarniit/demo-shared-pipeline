@@ -11,7 +11,9 @@ def call (body) {
    String DockerRegistry = config.dockerRegistry;
    String DockerRegistryCredentials = config.dockerRegistryCredentials;
    String TestsContainerFileLocation = config.testsContainerFileLocation;
+   String TestsContainerFileName = config.testsContainerFileName;
    String TestsScriptsFileLocation = config.testsScriptsFileLocation;
+   String TestsScriptsFileName = config.testsScriptsFileName;
 
 
    pipeline {
@@ -41,7 +43,7 @@ def call (body) {
             steps {
                 dir("${TestsContainerFileLocation}") {
                     powershell(script: """
-                        docker-compose up -d ${TestsContainerFileLocation}
+                        docker-compose up -d ${TestsContainerFileName}
                         """)                         
                 } 
          }
@@ -58,7 +60,7 @@ def call (body) {
          steps {
              dir("${TestsScriptsFileLocation}") {
                     powershell(script: """
-                        py ./${TestsScriptsFileLocation}
+                        py ./${TestsScriptsFileName}
                         """)                         
                 }  
          }
