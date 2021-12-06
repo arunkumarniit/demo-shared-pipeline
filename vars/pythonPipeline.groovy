@@ -43,7 +43,7 @@ def call (body) {
             steps {
                 dir("${pwd()}\\${TestsContainerFileLocation}") {
                     powershell(script: """ 
-                        docker-compose up -d ${TestsContainerFileName} 
+                        docker-compose up -d ${pwd()}\\${TestsContainerFileLocation}\\${TestsContainerFileName} 
                     """)  
                 }
          }
