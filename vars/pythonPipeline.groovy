@@ -13,9 +13,8 @@ def call (body) {
       stages {
          stage('Checkout') {
             steps {
-              echo "${RepoBranch}"
-              echo "${RepoUrl}"
-              git branch: "${RepoBranch}", url: "${RepoUrl}" 
+                echo "Workspace is ${pwd()}";
+                git branch: "${RepoBranch}", url: "${RepoUrl}" 
               
             }
          }
