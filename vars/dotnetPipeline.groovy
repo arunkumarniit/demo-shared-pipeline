@@ -33,14 +33,12 @@ def call (body) {
         }
         stage('Push Container') {
             steps { 
-                dir("${DockerFileFolder}") { 
-                    script {
-                        docker.withRegistry("https://index.docker.io/v1/", DockerRegistryCredentials)
-                        {
-                            def image = docker.build(DockerRegistry) 
-                            image.push(); 
-                        } 
-                    }
+                script {
+                    docker.withRegistry("https://index.docker.io/v1/", DockerRegistryCredentials)
+                    {
+                        def image = docker.build(DockerRegistry) 
+                        image.push(); 
+                    } 
                 }
             }
         }
@@ -62,7 +60,7 @@ def call (body) {
                         """)
                         powershell(script: """
                             docker run --rm -v C:/root/.cache/ aquasec/trivy:0.21.1 ${DockerRegistry}
-                                """)
+                        """)
                     }
                 }
             }
